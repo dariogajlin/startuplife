@@ -1,4 +1,30 @@
-# STARTUP LIFE - Arquitectura y Diseño
+# STARTUP LIFE - Documentación Técnica
+
+## Quick Start
+
+1. Abrir `index.html` en Chrome o Edge
+2. ¡Listo! El juego corre directamente en el navegador
+
+### Requisitos
+
+- Navegador moderno (Chrome, Edge, Firefox)
+- Webcam (opcional - funciona sin ella con mouse/teclado)
+
+## Cómo Jugar
+
+- **Menú principal**: Elige cantidad de jugadores humanos e IA, luego presiona JUGAR
+- **Dado**: Haz clic en cualquier lugar o presiona Espacio para lanzar
+- **Ruleta**: Haz clic para girar
+- **Decisiones**: Haz clic en la opción que prefieras
+
+### Webcam (Gestos)
+
+La webcam se activa automáticamente al iniciar. Gestos disponibles:
+
+- **Lanzar dado**: Movimiento rápido hacia abajo (simular lanzamiento)
+- **Girar ruleta**: Movimiento horizontal rápido
+
+Si la webcam no está disponible, se usa mouse/teclado como fallback.
 
 ## Stack Tecnológico
 
@@ -6,14 +32,13 @@
 - **Gráficos**: Canvas 2D (tablero y partículas), CSS 3D transforms (dado)
 - **Audio**: Web Audio API (sonidos procedurales, sin archivos de audio)
 - **Webcam**: MediaDevices API + análisis de frames por diferencia de pixels
-- **Servidor**: Archivo estático (server.bat con Python http.server)
+- **Servidor**: Archivo estático (abrir index.html directamente o servir con cualquier HTTP server)
+- Sin dependencias externas - corre offline
 
 ## Estructura de Archivos
 
 ```
-web/
 ├── index.html          # HTML principal (todas las pantallas)
-├── server.bat          # Servidor local
 ├── css/
 │   ├── main.css        # Estilos globales, pantallas, efectos
 │   ├── board.css       # (vacío, tablero se dibuja en canvas)
@@ -117,8 +142,8 @@ Todo el audio se genera con Web Audio API sin archivos:
 - **35 decisiones** con 2 opciones cada una
 - **35 eventos** aleatorios
 - **5 sets de ruleta** con 6-8 segmentos cada uno
-- **3 atributos**: Capital, Valuación, Runway
-- **Máximo 4 jugadores** (humanos + IA)
+- **4 atributos**: Capital, Ingresos, Valuación, Runway
+- **Máximo 4 jugadores** (humanos + IA, selección independiente)
 - **15 rondas** por partida
 
 ## Condiciones de Fin

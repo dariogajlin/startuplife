@@ -38,13 +38,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (firstInput) firstInput.focus();
     }
 
-    playerSlider.addEventListener('input', () => {
-        playerVal.textContent = playerSlider.value;
-        aiSlider.max = parseInt(playerSlider.value) - 1;
-        if (parseInt(aiSlider.value) >= parseInt(playerSlider.value)) {
-            aiSlider.value = parseInt(playerSlider.value) - 1;
+    function enforceAIMax() {
+        const total = parseInt(playerSlider.value);
+        // IA can be 0 to total - 1 (at least 1 human always)
+        aiSlider.max = total - 1;
+        aiSlider.min = 0;
+        if (parseInt(aiSlider.value) > total - 1) {
+            aiSlider.value = total - 1;
             aiVal.textContent = aiSlider.value;
         }
+    }
+
+    playerSlider.addEventListener('input', () => {
+        playerVal.textContent = playerSlider.value;
+        enforceAIMax();
         updateNameFields();
     });
 
@@ -53,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateNameFields();
     });
 
+    enforceAIMax();
     updateNameFields();
 
     // Start button

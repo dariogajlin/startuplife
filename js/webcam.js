@@ -14,7 +14,7 @@ class WebcamGestures {
         this.onHighFive = null;
         this.onFingerCount = null; // callback(count) for decision selection
         this.lastGestureTime = 0;
-        this.cooldown = 800; // 0.8 seconds between gestures
+        this.cooldown = 1500; // 1.5 seconds between gestures
         this.prevFrame = null;
         this.motionHistory = [];
         this.highFiveState = { wasStill: false, flashDetected: false };
@@ -130,7 +130,7 @@ class WebcamGestures {
         if (this.motionHistory.length < 3) return;
 
         // Update border: cyan when motion detected in hand area
-        if (totalMotion > 25 && (this.onThrow || this.onSpin || this.onHighFive || this.onFingerCount)) {
+        if (totalMotion > 50 && (this.onThrow || this.onSpin || this.onHighFive || this.onFingerCount)) {
             this.setBorderState('detecting');
         }
 
@@ -142,8 +142,8 @@ class WebcamGestures {
         const recent = this.motionHistory.slice(-5);
         const avgMotion = recent.reduce((s, m) => s + m.motion, 0) / recent.length;
 
-        // Minimum motion threshold
-        if (avgMotion < 50) return;
+        // Minimum motion threshold - require strong deliberate movement
+        if (avgMotion < 100) return;
 
         // Check direction of motion
         const first = recent[0];
@@ -152,13 +152,13 @@ class WebcamGestures {
         const dx = last.cx - first.cx;
 
         // If waiting for SPIN: horizontal motion triggers it
-        if (this.onSpin && Math.abs(dx) > 10) {
+        if (this.onSpin && Math.abs(dx) > 20) {
             this.triggerGesture('spin');
             return;
         }
 
-        // If waiting for THROW: any strong motion triggers it
-        if (this.onThrow && avgMotion > 60) {
+        // If waiting for THROW: strong downward motion triggers it
+        if (this.onThrow && avgMotion > 120 && dy > 5) {
             this.triggerGesture('throw');
             return;
         }

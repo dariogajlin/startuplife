@@ -92,17 +92,19 @@ class GameState {
         this.players = [];
         const humanCount = playerCount - aiCount;
 
-        for (let i = 0; i < playerCount; i++) {
+        for (let i = 0; i < humanCount; i++) {
             const config = { ...PLAYER_CONFIGS[i] };
-            if (i < humanCount) {
-                config.type = 'human';
-                if (customNames[i]) {
-                    config.startup = customNames[i];
-                }
-            } else {
-                config.type = 'ai';
+            config.type = 'human';
+            if (customNames[i]) {
+                config.startup = customNames[i];
             }
             this.players.push(new PlayerState(i, config));
+        }
+
+        for (let i = 0; i < aiCount; i++) {
+            const config = { ...AI_CONFIGS[i] };
+            config.type = 'ai';
+            this.players.push(new PlayerState(humanCount + i, config));
         }
     }
 

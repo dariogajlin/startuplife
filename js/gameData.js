@@ -9,9 +9,16 @@ const ATTRIBUTE_TYPES = {
 
 const PLAYER_CONFIGS = [
     { name: 'Jugador 1', startup: 'TechNova', color: '#60bbff', type: 'human' },
-    { name: 'IA 1', startup: 'DataForge', color: '#ff8c6a', type: 'ai' },
-    { name: 'IA 2', startup: 'CloudPulse', color: '#c97aff', type: 'ai' },
-    { name: 'IA 3', startup: 'GreenByte', color: '#5eff8a', type: 'ai' }
+    { name: 'Jugador 2', startup: 'DataForge', color: '#ff8c6a', type: 'human' },
+    { name: 'Jugador 3', startup: 'CloudPulse', color: '#c97aff', type: 'human' },
+    { name: 'Jugador 4', startup: 'GreenByte', color: '#5eff8a', type: 'human' }
+];
+
+const AI_CONFIGS = [
+    { name: 'IA 1', startup: 'ByteBot', color: '#ff6b6b', type: 'ai' },
+    { name: 'IA 2', startup: 'NeuralNet', color: '#ffa94d', type: 'ai' },
+    { name: 'IA 3', startup: 'AutoPilot', color: '#69db7c', type: 'ai' },
+    { name: 'IA 4', startup: 'DeepMind', color: '#da77f2', type: 'ai' }
 ];
 
 const DEFAULT_ATTRIBUTES = {
