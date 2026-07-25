@@ -112,7 +112,7 @@ const Effects = {
     },
 
     // Fireworks effect for end screen — bursts from left and right sides
-    fireworks(duration = 6000) {
+    fireworks(duration = 10000) {
         const canvas = document.createElement('canvas');
         canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;';
         document.body.appendChild(canvas);

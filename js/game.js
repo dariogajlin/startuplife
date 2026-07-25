@@ -150,24 +150,6 @@ class Game {
         await delay(100);
         let result = await this.dice.roll();
 
-        // Bias towards finishing: if player is ≤3 tiles from end and has been stuck 3+ turns
-        const player = this.state.currentPlayer;
-        const tilesFromEnd = (this.state.totalTiles - 1) - player.tileIndex;
-        if (tilesFromEnd > 0 && tilesFromEnd <= 3) {
-            if (!player._stuckNearEnd) player._stuckNearEnd = 0;
-            player._stuckNearEnd++;
-
-            if (player._stuckNearEnd >= 3) {
-                // Increasing chance to land exactly: 50% + 10% per extra turn stuck
-                const chance = 0.5 + (player._stuckNearEnd - 3) * 0.1;
-                if (Math.random() < Math.min(chance, 0.9)) {
-                    result = tilesFromEnd;
-                }
-            }
-        } else {
-            player._stuckNearEnd = 0;
-        }
-
         this.state.lastDiceValue = result;
         this.dice.hide();
         await delay(500); // Wait for dice to fully disappear before anything else
@@ -603,7 +585,7 @@ class Game {
         showScreen('end-screen');
 
         // Launch fireworks + sound simultaneously with the end screen
-        Effects.fireworks(8000);
+        Effects.fireworks();
         Sounds.playVictory(0);
     }
 }

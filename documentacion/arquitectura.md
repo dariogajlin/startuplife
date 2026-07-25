@@ -12,7 +12,7 @@
 
 ## Cómo Jugar
 
-- **Menú principal**: Elige cantidad de jugadores humanos e IA, luego presiona JUGAR
+- **Menú principal**: Elige el total de jugadores (2-4) y cuántos son IA (0 a jugadores-1), luego presiona JUGAR
 - **Dado**: Haz clic en cualquier lugar o presiona Espacio para lanzar
 - **Ruleta**: Haz clic para girar
 - **Decisiones**: Haz clic en la opción que prefieras
@@ -61,7 +61,7 @@ Si la webcam no está disponible, se usa mouse/teclado como fallback.
 │   ├── ai.js           # Lógica de la IA
 │   ├── webcam.js       # Detección de gestos por webcam
 │   ├── sounds.js       # Sonidos procedurales + música ambient
-│   ├── effects.js      # Confetti, flash rojo
+│   ├── effects.js      # Confetti, flash rojo, fuegos artificiales
 │   ├── particles.js    # Sistema de partículas de fondo
 │   ├── events.js       # Sistema de eventos (legacy)
 │   ├── decisions.js    # Sistema de decisiones (legacy)
@@ -124,15 +124,15 @@ La webcam analiza diferencias entre frames consecutivos:
 3. Calcula `totalMotion` (pixels que cambiaron > threshold)
 4. Acumula historial de movimiento (500ms)
 5. Detecta patrones:
-   - **Throw**: avgMotion > 60 + callback activo
-   - **Spin**: desplazamiento horizontal dx > 10
+   - **Throw**: avgMotion > 120 + movimiento hacia abajo
+   - **Spin**: desplazamiento horizontal dx > 20
    - **High Five**: burst de movimiento → quietud
 
 ## Sistema de Audio (Procedural)
 
 Todo el audio se genera con Web Audio API sin archivos:
 
-- **SoundSystem**: clicks, thuds, whoosh (osciladores + noise buffers)
+- **SoundSystem**: clicks, thuds, whoosh, fireworks (osciladores + noise buffers)
 - **AmbientMusic**: pad (sines detuned) + arpeggio (triangle, pentatónica)
 - **Notas**: programadas con `ctx.currentTime` para timing preciso
 
@@ -143,7 +143,7 @@ Todo el audio se genera con Web Audio API sin archivos:
 - **35 eventos** aleatorios
 - **5 sets de ruleta** con 6-8 segmentos cada uno
 - **4 atributos**: Capital, Ingresos, Valuación, Runway
-- **Máximo 4 jugadores** (humanos + IA, selección independiente)
+- **Máximo 4 jugadores** (total jugadores, IA de 0 a jugadores-1)
 - **15 rondas** por partida
 
 ## Condiciones de Fin

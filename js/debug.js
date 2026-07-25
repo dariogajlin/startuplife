@@ -134,6 +134,14 @@ const Debug = {
     testEndScreen() {
         Sounds.init();
 
+        // Hide debug panel for 10 seconds
+        if (this.panel) {
+            this.panel.style.display = 'none';
+            setTimeout(() => {
+                if (this.visible) this.panel.style.display = 'block';
+            }, 10000);
+        }
+
         // Show photo if available
         let photoEl = document.getElementById('winner-photo');
         if (!photoEl) {
@@ -175,7 +183,7 @@ const Debug = {
         showScreen('end-screen');
 
         // Launch fireworks + sound simultaneously with the end screen
-        Effects.fireworks(8000);
+        Effects.fireworks();
         Sounds.playVictory(0);
     },
 
