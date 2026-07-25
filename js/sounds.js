@@ -236,6 +236,59 @@ class SoundSystem {
         noise.start(now + 0.02);
     }
 
+    // Firework explosion — burst of noise with pitch sweep
+    playFirework() {
+        if (!this.enabled || !this.ctx) return;
+        this.resume();
+        const now = this.ctx.currentTime;
+
+        // Launch whistle
+        const whistle = this.ctx.createOscillator();
+        const whistleGain = this.ctx.createGain();
+        whistle.connect(whistleGain);
+        whistleGain.connect(this.ctx.destination);
+        whistle.type = 'sine';
+        whistle.frequency.setValueAtTime(400, now);
+        whistle.frequency.exponentialRampToValueAtTime(2000, now + 0.15);
+        whistleGain.gain.setValueAtTime(0.15, now);
+        whistleGain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+        whistle.start(now);
+        whistle.stop(now + 0.16);
+
+        // Explosion — burst of filtered noise
+        const bufferSize = this.ctx.sampleRate * 0.6;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            const t = i / bufferSize;
+            data[i] = (Math.random() * 2 - 1) * Math.pow(1 - t, 2);
+        }
+
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = buffer;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(1000 + Math.random() * 500, now + 0.15);
+        filter.Q.value = 0.8;
+
+        const expGain = this.ctx.createGain();
+        expGain.gain.setValueAtTime(0, now);
+        expGain.gain.setValueAtTime(0.35, now + 0.15);
+        expGain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+
+        noise.connect(filter);
+        filter.connect(expGain);
+        expGain.connect(this.ctx.destination);
+        noise.start(now + 0.12);
+
+        // Crackle — tiny high-frequency pops
+        for (let i = 0; i < 5; i++) {
+            const t = now + 0.2 + Math.random() * 0.4;
+            this._click(t, 3000 + Math.random() * 2000, 0.08, 0.02);
+        }
+    }
+
     // --- Internal helpers ---
 
     _click(time, freq, volume, duration) {

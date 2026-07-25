@@ -109,5 +109,141 @@ const Effects = {
             flash.style.opacity = '0';
             setTimeout(() => { flash.style.transition = 'opacity 0.15s ease-in'; }, 500);
         }, 350);
+    },
+
+    // Fireworks effect for end screen — bursts from left and right sides
+    fireworks(duration = 6000) {
+        const canvas = document.createElement('canvas');
+        canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;pointer-events:none;';
+        document.body.appendChild(canvas);
+
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const colors = ['#ff4444', '#ffaa00', '#44ff44', '#4488ff', '#ff44ff', '#00ffdd', '#ffffff', '#ffdd00'];
+        const rockets = [];
+        const particles = [];
+        const startTime = Date.now();
+
+        function launchRocket() {
+            const side = Math.random() > 0.5 ? 'left' : 'right';
+            const x = side === 'left'
+                ? canvas.width * (0.05 + Math.random() * 0.2)
+                : canvas.width * (0.75 + Math.random() * 0.2);
+            const targetY = canvas.height * (0.15 + Math.random() * 0.35);
+
+            rockets.push({
+                x: x,
+                y: canvas.height,
+                targetY: targetY,
+                vy: -(4 + Math.random() * 3),
+                color: colors[Math.floor(Math.random() * colors.length)],
+                exploded: false
+            });
+        }
+
+        function explode(rocket) {
+            const count = 60 + Math.floor(Math.random() * 40);
+            const baseColor = rocket.color;
+            Sounds.playFirework();
+
+            for (let i = 0; i < count; i++) {
+                const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.3;
+                const speed = 2 + Math.random() * 4;
+                particles.push({
+                    x: rocket.x,
+                    y: rocket.y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    gravity: 0.05 + Math.random() * 0.03,
+                    color: Math.random() > 0.3 ? baseColor : colors[Math.floor(Math.random() * colors.length)],
+                    size: 2 + Math.random() * 3,
+                    opacity: 1,
+                    decay: 0.008 + Math.random() * 0.008,
+                    trail: []
+                });
+            }
+        }
+
+        // Launch rockets at intervals
+        let launchInterval = setInterval(() => {
+            if (Date.now() - startTime > duration - 1000) {
+                clearInterval(launchInterval);
+                return;
+            }
+            launchRocket();
+        }, 400 + Math.random() * 300);
+
+        // Initial burst
+        launchRocket();
+        setTimeout(() => launchRocket(), 200);
+
+        const animate = () => {
+            const elapsed = Date.now() - startTime;
+            if (elapsed > duration) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                canvas.remove();
+                return;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Update rockets
+            for (let i = rockets.length - 1; i >= 0; i--) {
+                const r = rockets[i];
+                if (r.exploded) {
+                    rockets.splice(i, 1);
+                    continue;
+                }
+
+                r.y += r.vy;
+
+                // Draw rocket trail
+                ctx.beginPath();
+                ctx.arc(r.x, r.y, 2, 0, Math.PI * 2);
+                ctx.fillStyle = r.color;
+                ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(r.x, r.y);
+                ctx.lineTo(r.x + (Math.random() - 0.5) * 2, r.y + 8);
+                ctx.strokeStyle = 'rgba(255,200,50,0.6)';
+                ctx.stroke();
+
+                if (r.y <= r.targetY) {
+                    r.exploded = true;
+                    explode(r);
+                }
+            }
+
+            // Update particles
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.vy += p.gravity;
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vx *= 0.98;
+                p.opacity -= p.decay;
+
+                if (p.opacity <= 0) {
+                    particles.splice(i, 1);
+                    continue;
+                }
+
+                ctx.save();
+                ctx.globalAlpha = p.opacity;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.shadowBlur = 6;
+                ctx.shadowColor = p.color;
+                ctx.fill();
+                ctx.restore();
+            }
+
+            requestAnimationFrame(animate);
+        };
+
+        animate();
     }
 };

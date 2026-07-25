@@ -240,7 +240,6 @@ class Game {
             const desc = tile.description || 'Tu startup llegó al final!';
             const isHuman = player.type === 'human';
             const boosted = this.applyHistoryBonus(player, tile.modifiers);
-            setTimeout(() => Effects.confetti(), 500);
             await this.cards.showInfo(icon, tile.name, desc, boosted, isHuman);
             this.applyModifiers(player, boosted);
             this.endGame();
@@ -561,11 +560,6 @@ class Game {
         const winner = this.state.getWinner();
         const rankings = this.state.getRankings();
 
-        // Big celebration effects
-        Effects.confetti(4000);
-        setTimeout(() => Effects.confetti(4000), 2000);
-        setTimeout(() => Effects.confetti(4000), 4000);
-        Sounds.playVictory(0);
         Music.stop();
 
         $('#winner-name').textContent = winner ? winner.startup : 'Nadie';
@@ -607,5 +601,9 @@ class Game {
         });
 
         showScreen('end-screen');
+
+        // Launch fireworks + sound simultaneously with the end screen
+        Effects.fireworks(8000);
+        Sounds.playVictory(0);
     }
 }

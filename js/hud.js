@@ -34,8 +34,7 @@ class HUD {
             header.className = 'hud-player-header';
             header.innerHTML = `
                 <span class="hud-player-dot" style="background:${player.color}"></span>
-                <span class="hud-player-name">${player.startup}</span>
-                <span class="hud-player-type">${player.type === 'ai' ? 'IA' : ''}</span>
+                <span class="hud-player-name">${player.startup}${player.type === 'ai' ? ' <span class="hud-player-type">(IA)</span>' : ''}</span>
             `;
             section.appendChild(header);
 

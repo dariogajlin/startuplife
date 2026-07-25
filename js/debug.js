@@ -134,11 +134,6 @@ const Debug = {
     testEndScreen() {
         Sounds.init();
 
-        Effects.confetti(4000);
-        setTimeout(() => Effects.confetti(4000), 2000);
-        setTimeout(() => Effects.confetti(4000), 4000);
-        Sounds.playVictory(0);
-
         // Show photo if available
         let photoEl = document.getElementById('winner-photo');
         if (!photoEl) {
@@ -178,6 +173,10 @@ const Debug = {
         });
 
         showScreen('end-screen');
+
+        // Launch fireworks + sound simultaneously with the end screen
+        Effects.fireworks(8000);
+        Sounds.playVictory(0);
     },
 
     testMenu() {

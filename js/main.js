@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const row = document.createElement('div');
             row.className = 'option-row';
             row.innerHTML = `
-                <label>Jugador ${i + 1}</label>
+                <label>Startup ${i + 1}</label>
                 <input type="text" class="player-name-input" placeholder="Nombre startup"
                        value="${PLAYER_CONFIGS[i]?.startup || 'Startup ' + (i+1)}"
                        maxlength="12">
@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
             overlay.innerHTML = `
                 <div class="photo-container">
                     <h2 class="photo-title">📸 ${playerName}</h2>
-                    <p class="photo-subtitle">¿Querés sacarte una foto de recuerdo?</p>
+                    <p class="photo-subtitle">¿Querés sacarte una foto como CEO de tu startup ${playerName}?</p>
                     <div class="photo-preview-area">
                         <div id="photo-loading">Iniciando cámara...</div>
                         <video id="photo-video" autoplay playsinline style="display:none"></video>
