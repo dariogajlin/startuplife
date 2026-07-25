@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Life</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/board.css">
+    <link rel="stylesheet" href="css/dice.css">
+    <link rel="stylesheet" href="css/roulette.css">
+    <link rel="stylesheet" href="css/cards.css">
+    <link rel="stylesheet" href="css/hud.css">
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/particles.css">
+</head>
+<body>
+    <!-- Particle background -->
+    <canvas id="particles-bg"></canvas>
+
+    <!-- Main Menu -->
+    <div id="main-menu" class="screen active">
+        <div class="menu-container">
+            <div class="menu-glow"></div>
+            <img src="images/logo.png" alt="Startup Life" class="menu-logo">
+            <h1 class="game-title">STARTUP<span class="title-highlight">LIFE</span></h1>
+            <p class="game-subtitle">La vida de tu startup comienza aquí</p>
+            
+            <div class="menu-options">
+                <div class="option-row">
+                    <label>Jugadores</label>
+                    <div class="slider-group">
+                        <input type="range" id="player-count" min="2" max="4" value="2">
+                        <span id="player-count-val">2</span>
+                    </div>
+                </div>
+                <div class="option-row">
+                    <label>IA</label>
+                    <div class="slider-group">
+                        <input type="range" id="ai-count" min="0" max="3" value="1">
+                        <span id="ai-count-val">1</span>
+                    </div>
+                </div>
+                <div id="player-names"></div>
+            </div>
+
+            <div class="menu-buttons">
+                <button id="btn-how-to-play" class="btn-secondary" onclick="showScreen('how-to-play')">
+                    <span class="btn-text">CÓMO JUGAR</span>
+                </button>
+                <button id="btn-start" class="btn-primary">
+                    <span class="btn-text">JUGAR</span>
+                    <span class="btn-glow"></span>
+                </button>
+            </div>
+
+            <div class="webcam-hint">
+                <span class="hint-icon">📷</span>
+                <span class="hint-text">Usa gestos con la webcam o el mouse</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen" style="background: radial-gradient(ellipse at center, #1a2e1a 0%, #0f1f0f 50%, #0a150a 100%)">
+        <!-- Runway urgency vignette -->
+        <div id="runway-urgency"></div>
+
+        <!-- HUD -->
+        <div id="hud">
+            <div id="hud-top">
+                <div id="turn-info-wrapper">
+                    <div id="turn-info">
+                        <span id="turn-player-name">TechNova</span>
+                        <span id="turn-round">Ronda 1</span>
+                    </div>
+                    <div id="startup-health">
+                        <div id="health-stars">⭐⭐⭐</div>
+                        <div id="health-label">Startup estable</div>
+                    </div>
+                </div>
+            </div>
+            <div id="hud-attributes"></div>
+        </div>
+
+        <!-- Board -->
+        <canvas id="board-canvas"></canvas>
+
+        <!-- Dice overlay -->
+        <div id="dice-container" class="hidden">
+            <div id="dice-3d">
+                <div class="dice-cube">
+                    <div class="dice-face front"><span class="dice-num">1</span></div>
+                    <div class="dice-face back"><span class="dice-num">6</span></div>
+                    <div class="dice-face right"><span class="dice-num">3</span></div>
+                    <div class="dice-face left"><span class="dice-num">4</span></div>
+                    <div class="dice-face top"><span class="dice-num">2</span></div>
+                    <div class="dice-face bottom"><span class="dice-num">5</span></div>
+                </div>
+            </div>
+            <div class="dice-result hidden" id="dice-result"></div>
+        </div>
+
+        <!-- Roulette overlay -->
+        <div id="roulette-container" class="hidden">
+            <div class="roulette-prompt">Gira la ruleta</div>
+            <div class="roulette-wrapper">
+                <canvas id="roulette-canvas" width="400" height="400"></canvas>
+                <div class="roulette-pointer"></div>
+                <div class="roulette-center"></div>
+            </div>
+            <div class="roulette-result hidden" id="roulette-result"></div>
+        </div>
+
+        <!-- Card flip overlay -->
+        <div id="card-overlay" class="hidden">
+            <div class="card-scene">
+                <div class="card-flipper" id="card-flipper">
+                    <div class="card-back">
+                        <div class="card-back-pattern"></div>
+                        <div class="card-back-logo">Startup Life</div>
+                    </div>
+                    <div class="card-front" id="card-front">
+                        <div class="card-front-icon" id="card-icon"></div>
+                        <h2 class="card-front-title" id="card-title"></h2>
+                        <p class="card-front-desc" id="card-desc"></p>
+                        <div class="card-front-effects" id="card-effects"></div>
+                        <div class="card-front-options" id="card-options"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Decision card overlay -->
+        <div id="decision-overlay" class="hidden">
+            <div class="decision-card">
+                <div class="card-icon">◆</div>
+                <h2 id="decision-title"></h2>
+                <p id="decision-desc"></p>
+                <div id="decision-options"></div>
+            </div>
+        </div>
+
+        <!-- Event card overlay -->
+        <div id="event-overlay" class="hidden">
+            <div class="event-card">
+                <div class="card-icon">★</div>
+                <h2 id="event-title"></h2>
+                <p id="event-desc"></p>
+                <div id="event-effects"></div>
+            </div>
+        </div>
+
+        <!-- Action prompt -->
+        <div id="action-prompt" class="hidden">
+            <span id="prompt-text"></span>
+        </div>
+
+        <!-- Webcam overlay -->
+        <div id="webcam-overlay">
+            <div id="webcam-hint" class="hidden"></div>
+            <video id="webcam-video" autoplay playsinline></video>
+            <canvas id="webcam-canvas"></canvas>
+            <div id="webcam-status">
+                <span class="status-dot"></span>
+                <span id="webcam-status-text">Webcam</span>
+            </div>
+            <div id="gesture-feedback"></div>
+        </div>
+
+        <!-- Mute button -->
+        <div id="mute-btn" class="mute-btn">🔊</div>
+    </div>
+
+    <!-- How to Play Screen -->
+    <div id="how-to-play" class="screen">
+        <div class="how-container">
+            <h2 class="how-title">Cómo Jugar</h2>
+
+            <div class="how-slides">
+                <div class="how-slide">
+                    <div class="how-icon">🎲</div>
+                    <h3>Lanzá el dado</h3>
+                    <p>Hacé click, presioná espacio, o mové la mano hacia abajo frente a la webcam para lanzar.</p>
+                </div>
+
+                <div class="how-slide">
+                    <div class="how-icon">🗺️</div>
+                    <h3>Avanzá por el tablero</h3>
+                    <p>Tu ficha avanza por casillas con eventos, decisiones y ruletas que afectan tu startup.</p>
+                </div>
+
+                <div class="how-slide">
+                    <div class="how-icon">🤔</div>
+                    <h3>Tomá decisiones</h3>
+                    <p>En casillas naranjas elegís entre dos opciones que impactan tu capital, ingresos y valuación.</p>
+                </div>
+
+                <div class="how-slide">
+                    <div class="how-icon">🏆</div>
+                    <h3>Ganá la partida</h3>
+                    <p>Gana quien tenga mayor valor (capital + valuación) al final de las 15 rondas. No quiebres antes.</p>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="showScreen('main-menu')">
+                <span class="btn-text">VOLVER</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- End Screen -->
+    <div id="end-screen" class="screen">
+        <div class="end-container">
+            <div class="trophy">🏆</div>
+            <h1 id="winner-name"></h1>
+            <p class="end-subtitle">ha conquistado el mercado</p>
+            <div id="rankings"></div>
+            <button id="btn-replay" class="btn-primary">
+                <span class="btn-text">JUGAR DE NUEVO</span>
+                <span class="btn-glow"></span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/sounds.js"></script>
+    <script src="js/effects.js"></script>
+    <script src="js/gameData.js"></script>
+    <script src="js/gameState.js"></script>
+    <script src="js/board.js"></script>
+    <script src="js/dice.js"></script>
+    <script src="js/roulette.js"></script>
+    <script src="js/cardSystem.js"></script>
+    <script src="js/decisions.js"></script>
+    <script src="js/events.js"></script>
+    <script src="js/hud.js"></script>
+    <script src="js/ai.js"></script>
+    <script src="js/webcam.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/debug.js"></script>
+</body>
+</html>

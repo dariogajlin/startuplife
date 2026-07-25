@@ -1,0 +1,86 @@
+/* === ROULETTE === */
+#roulette-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    animation: fadeIn 0.3s ease;
+}
+
+.roulette-prompt {
+    font-size: 22px;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    animation: promptPulse 2s ease-in-out infinite;
+}
+
+.roulette-wrapper {
+    position: relative;
+    width: 400px;
+    height: 400px;
+}
+
+#roulette-canvas {
+    border-radius: 50%;
+    box-shadow: 
+        0 0 40px rgba(74, 158, 255, 0.2),
+        inset 0 0 40px rgba(0, 0, 0, 0.5);
+}
+
+.roulette-pointer {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 30px solid var(--accent-gold);
+    filter: drop-shadow(0 0 10px var(--accent-gold));
+    z-index: 10;
+    transition: transform 0.05s;
+}
+
+.roulette-pointer.bounce {
+    animation: pointerBounce 0.1s ease;
+}
+
+@keyframes pointerBounce {
+    0%, 100% { transform: translateX(-50%) rotate(0deg); }
+    50% { transform: translateX(-50%) rotate(10deg); }
+}
+
+.roulette-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--bg-card) 40%, #0a0a14 100%);
+    border: 3px solid rgba(74, 158, 255, 0.5);
+    box-shadow: 0 0 20px rgba(74, 158, 255, 0.3);
+    z-index: 5;
+}
+
+.roulette-result {
+    margin-top: 30px;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent-green);
+    text-shadow: 0 0 15px var(--accent-green);
+    padding: 12px 24px;
+    background: rgba(46, 204, 113, 0.1);
+    border-radius: 10px;
+    border: 1px solid rgba(46, 204, 113, 0.3);
+    animation: resultPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}

@@ -1,0 +1,185 @@
+/* === MAIN MENU === */
+.menu-container {
+    position: relative;
+    text-align: center;
+    padding: 40px 60px;
+    background: rgba(18, 18, 31, 0.9);
+    border-radius: 20px;
+    border: 1px solid rgba(74, 158, 255, 0.2);
+    backdrop-filter: blur(20px);
+    animation: menuSlideIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: scale(0.85);
+}
+
+.menu-glow {
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 26px;
+    background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple), var(--accent-cyan));
+    opacity: 0.3;
+    z-index: -1;
+    filter: blur(8px);
+    animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.02); }
+}
+
+@keyframes menuSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.75);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(0.85);
+    }
+}
+
+.menu-logo {
+    width: 200px;
+    height: auto;
+    margin-bottom: 16px;
+    filter: drop-shadow(0 0 20px rgba(74, 158, 255, 0.4));
+}
+
+.game-title {
+    font-size: 64px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #fff, #a0c4ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    position: relative;
+    animation: titleGlitch 4s ease-in-out infinite;
+}
+
+@keyframes titleGlitch {
+    0%, 90%, 100% { transform: translate(0); filter: none; }
+    91% { transform: translate(-2px, 1px); filter: hue-rotate(90deg); }
+    92% { transform: translate(2px, -1px); filter: hue-rotate(-90deg); }
+    93% { transform: translate(-1px, -1px); filter: none; }
+    94% { transform: translate(1px, 2px); filter: hue-rotate(45deg); }
+    95% { transform: translate(0); filter: none; }
+}
+
+.title-highlight {
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+}
+
+.title-highlight::after {
+    content: 'LIFE';
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0;
+    animation: titleFlicker 4s ease-in-out infinite;
+}
+
+@keyframes titleFlicker {
+    0%, 89%, 96%, 100% { opacity: 0; transform: translate(0); }
+    91% { opacity: 0.8; transform: translate(3px, -1px); }
+    93% { opacity: 0.6; transform: translate(-2px, 1px); }
+    95% { opacity: 0; transform: translate(0); }
+}
+
+.game-subtitle {
+    font-size: 18px;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    font-style: italic;
+}
+
+.menu-options {
+    margin-bottom: 30px;
+}
+
+.option-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding: 12px 20px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.option-row label {
+    font-size: 16px;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.slider-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.slider-group input[type="range"] {
+    width: 120px;
+    accent-color: var(--accent-blue);
+    cursor: pointer;
+}
+
+.slider-group span {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    min-width: 20px;
+}
+
+.webcam-hint {
+    margin-top: 24px;
+    font-size: 14px;
+    color: var(--accent-cyan);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.4);
+}
+
+.hint-icon {
+    font-size: 28px;
+    line-height: 1;
+    position: relative;
+    top: -3px;
+}
+
+.hint-text {
+    line-height: 1;
+}
+
+.player-name-input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(74, 158, 255, 0.3);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: var(--text-primary);
+    font-size: 14px;
+    width: 140px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.player-name-input:focus {
+    border-color: var(--accent-cyan);
+}

@@ -1,0 +1,334 @@
+/* === DECISION & EVENT CARDS === */
+
+/* Card Flip System */
+#card-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: none;
+    z-index: 100;
+}
+
+.card-scene {
+    perspective: 1200px;
+    width: 260px;
+    height: 400px;
+}
+
+.card-flipper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.15, 1), opacity 0.4s ease;
+    transform: rotateX(90deg) rotateY(0deg) scale(0.4);
+    opacity: 0;
+}
+
+.card-flipper.upright {
+    transform: rotateX(0deg) rotateY(0deg) scale(1);
+    opacity: 1;
+}
+
+.card-flipper.revealed {
+    transform: rotateX(0deg) rotateY(180deg) scale(1);
+    opacity: 1;
+}
+
+.card-back,
+.card-front {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.card-back {
+    background: linear-gradient(135deg, #1a1a3e, #2d1b69);
+    border: 3px solid rgba(74, 158, 255, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.card-back-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(74, 158, 255, 0.03) 10px,
+        rgba(74, 158, 255, 0.03) 20px
+    );
+}
+
+.card-back-logo {
+    font-size: 22px;
+    font-weight: 700;
+    font-family: sans-serif;
+    color: rgba(74, 158, 255, 0.4);
+    letter-spacing: 2px;
+    z-index: 1;
+}
+
+.card-front {
+    background: linear-gradient(160deg, #1a1a2e, #16213e);
+    border: 3px solid rgba(255, 255, 255, 0.15);
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 25px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.card-front-icon {
+    font-size: 38px;
+    margin-bottom: 12px;
+    animation: iconFloat 2s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+.card-front-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.card-front-desc {
+    font-size: 12px;
+    color: #ccc;
+    text-align: center;
+    line-height: 1.4;
+    margin-bottom: 14px;
+    max-width: 240px;
+}
+
+.card-front-effects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.card-front-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    margin-top: auto;
+}
+
+.card-option-btn {
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 4px solid var(--accent-blue);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.card-option-btn:nth-child(2) {
+    border-left-color: var(--accent-gold);
+}
+
+.card-option-btn:hover {
+    background: rgba(74, 158, 255, 0.12);
+    transform: translateX(6px);
+}
+
+.card-option-btn .opt-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.card-option-btn .opt-effect {
+    font-size: 11px;
+    color: #bbb;
+}
+
+/* Effect tags */
+.effect-tag {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.effect-tag.positive {
+    background: rgba(46, 204, 113, 0.15);
+    color: var(--accent-green);
+    border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.effect-tag.negative {
+    background: rgba(231, 76, 60, 0.15);
+    color: var(--accent-red);
+    border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+/* Legacy overlays hidden — using card system now */
+#decision-overlay,
+#event-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(6px);
+    z-index: 100;
+    animation: fadeIn 0.3s ease;
+}
+
+.decision-card,
+.event-card {
+    background: var(--bg-card);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 480px;
+    width: 90%;
+    text-align: center;
+    border-top: 4px solid var(--accent-gold);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: cardReveal 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.event-card {
+    border-top-color: var(--accent-blue);
+}
+
+@keyframes cardReveal {
+    0% { opacity: 0; transform: scale(0.5) translateY(60px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.card-icon {
+    font-size: 42px;
+    margin-bottom: 16px;
+    animation: iconBounce 1s ease-in-out infinite;
+}
+
+@keyframes iconBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.decision-card h2,
+.event-card h2 {
+    font-size: 24px;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+}
+
+.decision-card p,
+.event-card p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+/* Decision Options */
+#decision-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.decision-option {
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 4px solid var(--accent-blue);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-align: left;
+}
+
+.decision-option:nth-child(2) {
+    border-left-color: var(--accent-gold);
+}
+
+.decision-option:nth-child(3) {
+    border-left-color: var(--accent-purple);
+}
+
+.decision-option:hover {
+    background: rgba(74, 158, 255, 0.1);
+    transform: translateX(8px);
+    box-shadow: 0 4px 20px rgba(74, 158, 255, 0.1);
+}
+
+.decision-option .option-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.decision-option .option-effects {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* Event Effects */
+#event-effects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
+
+.effect-tag {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.effect-tag.positive {
+    background: rgba(46, 204, 113, 0.15);
+    color: var(--accent-green);
+    border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.effect-tag.negative {
+    background: rgba(231, 76, 60, 0.15);
+    color: var(--accent-red);
+    border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.opt-number {
+    color: var(--accent-cyan);
+    font-weight: 900;
+    margin-right: 4px;
+}
