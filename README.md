@@ -1,6 +1,7 @@
 # STARTUP LIFE
 
-### Desarrollado para el Hackaton "Desarrollo de software basado en agentes con Kiro + AWS" para CodigoFacilito - Equipo 292
+### Desarrollado para el Hackaton "Desarrollo de software basado en agentes con Kiro + AWS" para CodigoFacilito
+### Equipo 292 - Integrante: Dario Gustavo Ajlin
 
 ## Demo
 
