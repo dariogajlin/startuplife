@@ -1,5 +1,11 @@
 # STARTUP LIFE
 
+### Desarrollado para el Hackaton "Desarrollo de software basado en agentes con Kiro + AWS" para CodigoFacilito - Equipo 292
+
+## Demo
+
+[Ver demo/video presentación en YouTube](https://youtu.be/jD_54bVMcy4)
+
 ## Objetivo
 
 Construir la startup más valiosa. Gana el jugador con mayor **valor** (capital + valuación) al final de la partida.
