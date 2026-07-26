@@ -4,7 +4,11 @@
 
 ## Demo
 
-[Ver demo/video presentación en YouTube](https://youtu.be/jD_54bVMcy4)
+[Ver Demo/Video Presentación en YouTube](https://youtu.be/jD_54bVMcy4)
+
+## Jugar
+
+[Jugar Startup Life online](https://dariogajlin.github.io/startuplife/)
 
 ## Objetivo
 
